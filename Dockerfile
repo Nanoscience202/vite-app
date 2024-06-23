@@ -2,7 +2,10 @@
 FROM node:20-alpine
 
 # set the user to run the app
-USER app
+RUN addgroup app && adduser -S -G app app
+
+# Create the /app directory and change its ownership
+RUN mkdir -p /app && chown app:app /app
 
 # set the working directory to /app
 WORKDIR /app
@@ -13,8 +16,6 @@ WORKDIR /app
 # If the package.json and package-lock.json files haven't changed, Docker will use 
 # use cached dependencies.
 COPY package*.json ./
-
-USER app
 
 RUN npm install
 
