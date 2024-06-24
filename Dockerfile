@@ -2,10 +2,10 @@
 FROM node:20-alpine
 
 # set the user to run the app
-RUN addgroup app && adduser -S -G app app
+RUN adduser -S app
 
 # Create the /app directory and change its ownership
-RUN mkdir -p /app && chown app:app /app
+RUN mkdir -p /app && chown app /app
 
 # set the working directory to /app
 WORKDIR /app
@@ -21,9 +21,11 @@ RUN npm install
 
 COPY . ./
 
+RUN npm run build
+
 # expose port 8080 to tell Docker that the contained listnes on the specified
 # network ports at runtime
-EXPOSE 5173
+EXPOSE 8080
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "preview"]
 
